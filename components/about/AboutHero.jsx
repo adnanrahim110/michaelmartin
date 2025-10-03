@@ -57,10 +57,10 @@ export default function AboutHero() {
                 View series
               </Link>
               <Link
-                href="/prints"
+                href="/book"
                 className="rounded-lg border border-primary/40 bg-primary/10 px-4 py-2 text-primary hover:bg-primary/15 transition-colors"
               >
-                Browse prints
+                About Book
               </Link>
             </div>
           </div>
