@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #215c65;
+  --color-primary-50: #effcfb;
+  --color-primary-100: #d5f8f7;
+  --color-primary-200: #b1f0ef;
+  --color-primary-300: #7be4e5;
+  --color-primary-400: #3ecfd2;
+  --color-primary-500: #22b2b8;
+  --color-primary-600: #1f909b;
+  --color-primary-700: #20747e;
+  --color-primary-800: #215c65;
+  --color-primary-900: #204f59;
+  --color-primary-950: #10343c;
+
+  --font-cormorant: 'Cormorant Garamond', serif;
+  --font-poppins: 'Poppins', sans-serif;
+
+  --color-bg: #0b0f12;
+  --color-surface: #12181c;
+  --color-muted: #1b2328;
+  --color-border: #233037;
+  --color-text: #e6edf3;
+  --color-text-dim: #b6c2cc;
+
+  --radius-sm: 0.5rem;
+  --radius: 0.75rem;
+  --radius-lg: 1rem;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  html,
+  body {
+    height: 100%;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-bg text-text font-poppins;
+  }
+
+  :is(h1, h2, h3, h4, h5, h6) {
+    @apply font-cormorant;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl font-semibold tracking-wide;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl font-semibold tracking-wide;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl font-medium;
+  }
+
+  p {
+    @apply leading-7 text-text-dim;
+  }
 }

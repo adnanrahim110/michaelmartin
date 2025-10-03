@@ -1,0 +1,12 @@
+import PageLayout from "./PageLayout";
+
+export const metadata = {
+  title: "Files and Series by Michael Martin",
+};
+
+export default function Series() {
+
+  return (
+    <PageLayout />
+  );
+}

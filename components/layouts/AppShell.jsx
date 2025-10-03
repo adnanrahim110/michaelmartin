@@ -1,0 +1,15 @@
+import { TooltipProvider } from "../ui/tooltip";
+import Footer from "./Footer";
+import Navigation from "./Navigation";
+
+const AppShell = ({ children }) => {
+  return (
+    <TooltipProvider>
+      <Navigation />
+      {children}
+      <Footer />
+    </TooltipProvider>
+  );
+};
+
+export default AppShell;
