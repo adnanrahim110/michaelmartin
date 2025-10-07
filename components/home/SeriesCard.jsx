@@ -5,9 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function SeriesCard({
-  title,
-  description,
-  image,
+  text,
+  img,
   slug,
   href,
   tag,
@@ -15,7 +14,6 @@ export default function SeriesCard({
   priority,
 }) {
   const to = href ?? (slug ? `/series/${slug}` : "#");
-  const src = image?.startsWith("http") ? image : `/images/${image}`;
 
   return (
     <Link href={to} className="group relative block">
@@ -24,8 +22,8 @@ export default function SeriesCard({
         <div className="relative overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_20px_60px_-30px_rgba(0,0,0,.65)]">
           <div className="relative aspect-[1/1]">
             <Image
-              src={src}
-              alt={title}
+              src={`/images/series/${img}`}
+              alt={text}
               fill
               sizes="(max-width: 1024px) 100vw, 420px"
               priority={!!priority}
@@ -48,11 +46,11 @@ export default function SeriesCard({
           <div className="absolute inset-x-3 bottom-3">
             <div className="flex items-start gap-3 rounded-xl border border-border/70 bg-surface/85 backdrop-blur px-4 py-3 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:border-primary/40 group-hover:bg-surface/90">
               <div className="min-w-0">
-                <h3 className="text-base md:text-lg font-semibold tracking-tight">
-                  {title}
-                </h3>
+                {/* <h3 className="text-base md:text-lg font-semibold tracking-tight">
+                  {text}
+                </h3> */}
                 <p className="mt-1 line-clamp-2 text-[13px] text-text-dim">
-                  {description}
+                  {text}
                 </p>
               </div>
 

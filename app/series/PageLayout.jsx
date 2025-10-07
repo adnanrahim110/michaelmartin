@@ -3,119 +3,60 @@
 import SeriesCard from "@/components/home/SeriesCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { series } from "@/constants";
 import { ChevronDown, Filter, Search } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const PageLayout = () => {
-  const recyclers = "series/1.jpg";
-  const littleIndia = "series/2.jpg";
-  const umbrella = "series/3.jpg";
-  const facades = "series/4.jpg";
-  const minima = "series/5.jpg";
-  const abstracts = "series/6.jpg";
+  // Transform series data to match component structure
+  const data = series.map((item, index) => {
+    // Extract year from text (look for 4-digit year)
+    const yearMatch = item.text.match(/\b(19|20)\d{2}\b/);
+    const year = yearMatch ? parseInt(yearMatch[0]) : 2000 + index;
 
-  const data = [
-    {
-      title: "The Recyclers",
-      description:
-        "Routes at dawn. Corrugated stacked and folded. Hands that keep a city going.",
-      image: recyclers,
-      slug: "recyclers",
-      tag: "Documentary",
-      year: 2016,
-      location: "Manila",
-    },
-    {
-      title: "Little India Festivals",
-      description:
-        "Color, incense, and devotion. Singapore's cultural heart in celebration.",
-      image: littleIndia,
-      slug: "little-india",
-      tag: "Culture",
-      year: 2019,
-      location: "Singapore",
-    },
-    {
-      title: "Umbrella Protests, Hong Kong",
-      description:
-        "Mong Kok, 2014. Children in uniforms. A future at stake. A city asking to be heard.",
-      image: umbrella,
-      slug: "umbrella-protests",
-      tag: "Protest",
-      year: 2014,
-      location: "Hong Kong",
-    },
-    {
-      title: "Blue Man",
-      description: "Mystery in monotone. A recurring face in cyan.",
-      image: facades,
-      slug: "blue-man",
-      tag: "Portrait",
-      year: 2018,
-      location: "Hong Kong",
-    },
-    {
-      title: "Culmination",
-      description: "Where the street work meets interpretation. The synthesis.",
-      image: umbrella,
-      slug: "culmination",
-      tag: "Synthesis",
-      year: 2021,
-      location: "Atlanta",
-    },
-    {
-      title: "Disco Shirt",
-      description: "Joy in the mundane. Fashion on the street.",
-      image: littleIndia,
-      slug: "disco-shirt",
-      tag: "Style",
-      year: 2017,
-      location: "Singapore",
-    },
-    {
-      title: "Facades & Scapes",
-      description:
-        "Urban architecture as witness to the street. Concrete testimonies.",
-      image: facades,
-      slug: "facades",
-      tag: "Abstract",
-      year: 2010,
-      location: "Miami",
-    },
-    {
-      title: "Minima",
-      description: "Essential moments. Nothing more. Space and silence.",
-      image: minima,
-      slug: "minima",
-      tag: "Minimal",
-      year: 2022,
-      location: "Singapore",
-    },
-    {
-      title: "Earlier Abstracts",
-      description:
-        "Before the street. Light, form, and the search for meaning.",
-      image: abstracts,
-      slug: "abstracts",
-      tag: "Origins",
-      year: 2006,
-      location: "Atlanta",
-    },
-  ];
+    // Extract location from text (look for location patterns)
+    let location = "Unknown";
+    if (item.text.includes("Atlanta")) location = "Atlanta";
+    else if (item.text.includes("Hong Kong")) location = "Hong Kong";
+    else if (item.text.includes("Singapore")) location = "Singapore";
+    else if (item.text.includes("Manila") || item.text.includes("Philippines"))
+      location = "Philippines";
+    else if (item.text.includes("Miami")) location = "Miami";
+    else if (item.text.includes("Laoag")) location = "Philippines";
 
-  const tags = [
-    "All",
-    "Documentary",
-    "Culture",
-    "Protest",
-    "Portrait",
-    "Style",
-    "Abstract",
-    "Minimal",
-    "Synthesis",
-    "Origins",
-  ];
+    // Format tag for display
+    const formatTag = (tag) => {
+      return tag
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    };
+
+    return {
+      title: item.text.split(",")[0].replace(/"/g, ""), // Take first part as title, remove quotes
+      description: item.text,
+      image: Array.isArray(item.img) ? item.img[0] : item.img,
+      slug: item.slug,
+      tag: formatTag(item.tag),
+      year: year,
+      location: location,
+    };
+  });
+
+  // Get unique tags from series data
+  const uniqueTags = [
+    ...new Set(
+      series.map((item) => {
+        return item.tag
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+      })
+    ),
+  ].sort();
+
+  const tags = ["All", ...uniqueTags];
 
   const [q, setQ] = useState("");
   const [tag, setTag] = useState("All");
@@ -225,15 +166,20 @@ const PageLayout = () => {
                 <SeriesCard
                   priority
                   tag={featured.tag}
-                  title={featured.title}
-                  description={featured.description}
-                  image={featured.image}
+                  text={featured.description}
+                  img={featured.image}
                   slug={featured.slug}
                 />
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
                 {filtered.slice(1, 3).map((s) => (
-                  <SeriesCard key={s.slug} tag={s.tag} {...s} />
+                  <SeriesCard
+                    key={s.slug}
+                    tag={s.tag}
+                    text={s.description}
+                    img={s.image}
+                    slug={s.slug}
+                  />
                 ))}
               </div>
             </div>
@@ -261,7 +207,13 @@ const PageLayout = () => {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {rest.map((s) => (
-              <SeriesCard key={s.slug} tag={s.tag} {...s} />
+              <SeriesCard
+                key={s.slug}
+                tag={s.tag}
+                text={s.description}
+                img={s.image}
+                slug={s.slug}
+              />
             ))}
           </div>
         )}
