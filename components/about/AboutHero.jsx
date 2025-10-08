@@ -1,90 +1,1 @@
-"use client";
-
-import Image from "next/image";
-import Link from "next/link";
-
-export default function AboutHero() {
-  return (
-    <section className="relative bg-bg">
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(65%_55%_at_50%_0%,rgba(33,92,101,.14),transparent_60%)]" />
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-6 py-14 md:py-20">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_.9fr]">
-          {/* copy */}
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-[11px] text-text-dim">
-              About the artist
-            </div>
-
-            <h1 className="mt-4 text-4xl md:text-6xl font-semibold tracking-tight">
-              Michael <span className="text-primary">Martin</span>
-            </h1>
-
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-text">
-              “Every frame is a question.” Michael Martin’s work turns the
-              streets into stories, asking us to see truth where others pass by.
-            </p>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-dim">
-              Michael Martin is a photographer whose lens moves between the
-              intimate and the political. From the Umbrella Protests in Hong
-              Kong to everyday markets in Singapore and Manila, his work
-              captures ordinary lives caught in extraordinary times. Each image
-              becomes both memory and witness, revealing humanness where
-              technology, society, and conflict threaten to erase it.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-2 text-[11px]">
-              <span className="rounded-full border border-border bg-surface/70 px-3 py-1 text-text-dim">
-                Street
-              </span>
-              <span className="rounded-full border border-border bg-surface/70 px-3 py-1 text-text-dim">
-                Portrait
-              </span>
-              <span className="rounded-full border border-border bg-surface/70 px-3 py-1 text-text-dim">
-                Interpretive
-              </span>
-            </div>
-
-            <div className="mt-8 h-px w-24 bg-border" />
-
-            <div className="mt-6 flex items-center gap-4 text-sm">
-              <Link
-                href="/series"
-                className="rounded-lg border border-border bg-surface/70 px-4 py-2 text-text hover:bg-surface/80 transition-colors"
-              >
-                View series
-              </Link>
-              <Link
-                href="/book"
-                className="rounded-lg border border-primary/40 bg-primary/10 px-4 py-2 text-primary hover:bg-primary/15 transition-colors"
-              >
-                About Book
-              </Link>
-            </div>
-          </div>
-
-          <div className="grid">
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/70 shadow-[0_20px_60px_-30px_rgba(0,0,0,.6)]">
-              <div className="relative aspect-square">
-                <Image
-                  src="/images/author.png"
-                  alt="Michael Martin"
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width:1024px) 100vw, 420px"
-                />
-              </div>
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg/85 via-bg/15 to-transparent" />
-              <div className="absolute bottom-3 right-3 rounded-full border border-border bg-surface/85 px-3 py-1 text-[11px] text-text-dim">
-                Portrait
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+"use client";import Image from "next/image";import Link from "next/link";export default function AboutHero() {  return (    <section className="relative bg-bg">      <div aria-hidden className="pointer-events-none absolute inset-0">        <div className="absolute inset-0 bg-[radial-gradient(65%_55%_at_50%_0%,rgba(33,92,101,.14),transparent_60%)]" />      </div>      <div className="relative mx-auto max-w-7xl px-6 py-14 md:py-20">        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_.9fr]">          <div>            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-[11px] text-text-dim">              About the artist            </div>            <h1 className="mt-4 text-4xl md:text-6xl font-semibold tracking-tight">              Michael <span className="text-primary">Martin</span>            </h1>            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-text">              “Every frame is a question.” Michael Martin’s work turns the              streets into stories, asking us to see truth where others pass by.            </p>            <p className="mt-4 max-w-2xl text-base leading-relaxed text-text-dim">              Michael Martin is a photographer whose lens moves between the              intimate and the political. From the Umbrella Protests in Hong              Kong to everyday markets in Singapore and Manila, his work              captures ordinary lives caught in extraordinary times. Each image              becomes both memory and witness, revealing humanness where              technology, society, and conflict threaten to erase it.            </p>            <div className="mt-8 flex flex-wrap gap-2 text-[11px]">              <span className="rounded-full border border-border bg-surface/70 px-3 py-1 text-text-dim">                Street              </span>              <span className="rounded-full border border-border bg-surface/70 px-3 py-1 text-text-dim">                Portrait              </span>              <span className="rounded-full border border-border bg-surface/70 px-3 py-1 text-text-dim">                Interpretive              </span>            </div>            <div className="mt-8 h-px w-24 bg-border" />            <div className="mt-6 flex items-center gap-4 text-sm">              <Link                href="/series"                className="rounded-lg border border-border bg-surface/70 px-4 py-2 text-text hover:bg-surface/80 transition-colors"              >                View series              </Link>              <Link                href="/book"                className="rounded-lg border border-primary/40 bg-primary/10 px-4 py-2 text-primary hover:bg-primary/15 transition-colors"              >                About Book              </Link>            </div>          </div>          <div className="grid">            <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/70 shadow-[0_20px_60px_-30px_rgba(0,0,0,.6)]">              <div className="relative aspect-square">                <Image                  src="/images/author.png"                  alt="Michael Martin"                  fill                  className="object-cover"                  priority                  sizes="(max-width:1024px) 100vw, 420px"                />              </div>              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg/85 via-bg/15 to-transparent" />              <div className="absolute bottom-3 right-3 rounded-full border border-border bg-surface/85 px-3 py-1 text-[11px] text-text-dim">                Portrait              </div>            </div>          </div>        </div>      </div>    </section>  );}

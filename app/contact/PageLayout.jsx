@@ -1,363 +1,1 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  ArrowRight,
-  Loader2,
-  Mail,
-  MessageSquare,
-  Phone,
-  Tag,
-} from "lucide-react";
-import { useMemo, useState } from "react";
-
-const PageLayout = () => {
-  const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    type: "",
-    message: "",
-    company: "", // honeypot
-  });
-  const [errors, setErrors] = useState({});
-  const [chars, setChars] = useState(0);
-
-  const canSubmit = useMemo(() => {
-    if (sending) return false;
-    return (
-      form.name && form.email && form.type && form.message && !form.company
-    );
-  }, [form, sending]);
-
-  function validate() {
-    const next = {};
-    if (!form.name.trim()) next.name = "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      next.email = "Enter a valid email.";
-    if (!form.type) next.type = "Select an inquiry type.";
-    if (form.message.trim().length < 10) next.message = "Message is too short.";
-    if (form.message.length > 1000)
-      next.message = "Keep it under 1000 characters.";
-    return next;
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const v = validate();
-    setErrors(v);
-    if (Object.keys(v).length) return;
-
-    setSending(true);
-    try {
-      // replace with real submit
-      await new Promise((r) => setTimeout(r, 900));
-      setSubmitted(true);
-      setForm({
-        name: "",
-        email: "",
-        phone: "",
-        type: "",
-        message: "",
-        company: "",
-      });
-      setChars(0);
-    } catch {
-      setErrors({ submit: "Something went wrong. Try again." });
-    } finally {
-      setSending(false);
-    }
-  }
-  return (
-    <div className="relative min-h-[100svh] overflow-hidden bg-bg">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/18 blur-3xl" />
-        <div className="absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-primary/12 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(33,92,101,.12),transparent_60%)]" />
-      </div>
-
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-4 py-10 md:py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-10 text-center md:mb-14"
-        >
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-            <Mail className="h-7 w-7 text-primary" />
-          </div>
-          <h1 className="text-4xl font-light leading-tight md:text-5xl">
-            Let’s connect
-          </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base font-light text-text-dim md:text-lg">
-            The streets are full of voices. This is one way for ours to meet.
-          </p>
-        </motion.div>
-
-        <AnimatePresence mode="wait">
-          {submitted ? (
-            <motion.div
-              key="thanks"
-              initial={{ opacity: 0, y: 8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
-              className="w-full"
-            >
-              <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-surface/70 p-10 backdrop-blur">
-                <div className="mb-6 flex items-center justify-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-                    <MessageSquare className="h-8 w-8 text-primary" />
-                  </div>
-                </div>
-                <h2 className="mb-3 text-center text-2xl font-light">
-                  Message sent
-                </h2>
-                <p className="mx-auto mb-8 max-w-xl text-center font-light text-text-dim">
-                  Thanks for reaching out. I read every note and reply within 48
-                  hours. If it’s urgent, say so in the first line next time.
-                </p>
-                <div className="flex justify-center">
-                  <Button
-                    variant="secondary"
-                    onClick={() => setSubmitted(false)}
-                  >
-                    Send another message
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="form"
-              initial={{ opacity: 0, y: 8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
-              className="grid w-full max-w-6xl gap-8 md:grid-cols-5"
-            >
-              <div className="md:col-span-3">
-                <form
-                  onSubmit={handleSubmit}
-                  className="rounded-2xl border border-border bg-surface/70 p-4 backdrop-blur md:p-6"
-                >
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        id="name"
-                        placeholder="Your name"
-                        value={form.name}
-                        onChange={(e) =>
-                          setForm((p) => ({ ...p, name: e.target.value }))
-                        }
-                        aria-invalid={!!errors.name}
-                        aria-describedby={errors.name ? "name-err" : undefined}
-                        startAdornment={<MessageSquare className="h-4 w-4" />}
-                        required
-                      />
-                      {errors.name && (
-                        <p id="name-err" className="text-xs text-red-400">
-                          {errors.name}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="you@email.com"
-                        value={form.email}
-                        onChange={(e) =>
-                          setForm((p) => ({ ...p, email: e.target.value }))
-                        }
-                        aria-invalid={!!errors.email}
-                        aria-describedby={
-                          errors.email ? "email-err" : undefined
-                        }
-                        startAdornment={<Mail className="h-4 w-4" />}
-                        required
-                      />
-                      {errors.email && (
-                        <p id="email-err" className="text-xs text-red-400">
-                          {errors.email}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">
-                        Phone <span className="text-text-dim">(optional)</span>
-                      </Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="+1 555 123 4567"
-                        value={form.phone}
-                        onChange={(e) =>
-                          setForm((p) => ({ ...p, phone: e.target.value }))
-                        }
-                        startAdornment={<Phone className="h-4 w-4" />}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label>Inquiry type</Label>
-                      <Select
-                        value={form.type}
-                        onValueChange={(v) =>
-                          setForm((p) => ({ ...p, type: v }))
-                        }
-                      >
-                        <SelectTrigger aria-invalid={!!errors.type}>
-                          <Tag className="h-4 w-4 opacity-70" />
-                          <SelectValue placeholder="Choose one" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="prints">Prints</SelectItem>
-                          <SelectItem value="licensing">Licensing</SelectItem>
-                          <SelectItem value="exhibition">Exhibition</SelectItem>
-                          <SelectItem value="collaboration">
-                            Collaboration
-                          </SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      {errors.type && (
-                        <p className="text-xs text-red-400">{errors.type}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="mt-3 space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <div className="relative">
-                      <Textarea
-                        id="message"
-                        placeholder="Tell me about your inquiry..."
-                        className="min-h-[160px]"
-                        value={form.message}
-                        onChange={(e) => {
-                          const val = e.target.value.slice(0, 1000);
-                          setForm((p) => ({ ...p, message: val }));
-                          setChars(val.length);
-                        }}
-                        aria-invalid={!!errors.message}
-                        aria-describedby={
-                          errors.message ? "msg-err" : undefined
-                        }
-                        required
-                      />
-                      <span className="pointer-events-none absolute bottom-2 right-2 text-[11px] text-text-dim">
-                        {chars}/1000
-                      </span>
-                    </div>
-                    {errors.message && (
-                      <p id="msg-err" className="text-xs text-red-400">
-                        {errors.message}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* honeypot */}
-                  <div className="hidden">
-                    <Label htmlFor="company">Company</Label>
-                    <Input
-                      id="company"
-                      tabIndex={-1}
-                      autoComplete="off"
-                      value={form.company}
-                      onChange={(e) =>
-                        setForm((p) => ({ ...p, company: e.target.value }))
-                      }
-                    />
-                  </div>
-
-                  {errors.submit && (
-                    <p className="mt-4 text-sm text-red-400">{errors.submit}</p>
-                  )}
-
-                  <div className="mt-6">
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="group w-full"
-                      disabled={!canSubmit}
-                    >
-                      {sending ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Sending
-                        </>
-                      ) : (
-                        <>
-                          Send message
-                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </form>
-              </div>
-
-              <div className="md:col-span-2">
-                <div className="sticky top-8 space-y-6">
-                  <div className="rounded-2xl border border-border bg-surface/70 p-6 backdrop-blur">
-                    <h3 className="text-lg font-medium">Quick links</h3>
-                    <ul className="mt-4 space-y-3 text-sm">
-                      <li className="text-text-dim">
-                        For immediate print inquiries:
-                        <br />
-                        <a
-                          href="mailto:prints@michaelmartin.photo"
-                          className="text-primary hover:underline"
-                        >
-                          prints@michaelmartin.photo
-                        </a>
-                      </li>
-                      <li className="text-text-dim">
-                        Typical reply time: 24 to 48 hours
-                      </li>
-                      <li className="text-text-dim">
-                        Time sensitive? Start your message with “Urgent”.
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="rounded-2xl border border-border bg-surface/70 p-6 backdrop-blur">
-                    <h3 className="text-lg font-medium">What helps</h3>
-                    <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-text-dim">
-                      <li>
-                        For licensing, include usage, region, and duration.
-                      </li>
-                      <li>
-                        For exhibitions, include dates, space, and format.
-                      </li>
-                      <li>
-                        For prints, share size and paper preferences if any.
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-};
-
-export default PageLayout;
+"use client";import { Button } from "@/components/ui/button";import { Input } from "@/components/ui/input";import { Label } from "@/components/ui/label";import {  Select,  SelectContent,  SelectItem,  SelectTrigger,  SelectValue,} from "@/components/ui/select";import { Textarea } from "@/components/ui/textarea";import { AnimatePresence, motion } from "framer-motion";import {  ArrowRight,  Loader2,  Mail,  MessageSquare,  Phone,  Tag,} from "lucide-react";import { useMemo, useState } from "react";const PageLayout = () => {  const [submitted, setSubmitted] = useState(false);  const [sending, setSending] = useState(false);  const [form, setForm] = useState({    name: "",    email: "",    phone: "",    type: "",    message: "",    company: "", // honeypot  });  const [errors, setErrors] = useState({});  const [chars, setChars] = useState(0);  const canSubmit = useMemo(() => {    if (sending) return false;    return (      form.name && form.email && form.type && form.message && !form.company    );  }, [form, sending]);  function validate() {    const next = {};    if (!form.name.trim()) next.name = "Please enter your name.";    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))      next.email = "Enter a valid email.";    if (!form.type) next.type = "Select an inquiry type.";    if (form.message.trim().length < 10) next.message = "Message is too short.";    if (form.message.length > 1000)      next.message = "Keep it under 1000 characters.";    return next;  }  async function handleSubmit(e) {    e.preventDefault();    const v = validate();    setErrors(v);    if (Object.keys(v).length) return;    setSending(true);    try {      await new Promise((r) => setTimeout(r, 900));      setSubmitted(true);      setForm({        name: "",        email: "",        phone: "",        type: "",        message: "",        company: "",      });      setChars(0);    } catch {      setErrors({ submit: "Something went wrong. Try again." });    } finally {      setSending(false);    }  }  return (    <div className="relative min-h-[100svh] overflow-hidden bg-bg">      <div className="pointer-events-none absolute inset-0">        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/18 blur-3xl" />        <div className="absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-primary/12 blur-3xl" />        <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(33,92,101,.12),transparent_60%)]" />      </div>      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-4 py-10 md:py-16">        <motion.div          initial={{ opacity: 0, y: 12 }}          animate={{ opacity: 1, y: 0 }}          className="mb-10 text-center md:mb-14"        >          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">            <Mail className="h-7 w-7 text-primary" />          </div>          <h1 className="text-4xl font-light leading-tight md:text-5xl">            Let’s connect          </h1>          <p className="mx-auto mt-4 max-w-2xl text-base font-light text-text-dim md:text-lg">            The streets are full of voices. This is one way for ours to meet.          </p>        </motion.div>        <AnimatePresence mode="wait">          {submitted ? (            <motion.div              key="thanks"              initial={{ opacity: 0, y: 8, scale: 0.98 }}              animate={{ opacity: 1, y: 0, scale: 1 }}              exit={{ opacity: 0, y: -8, scale: 0.98 }}              className="w-full"            >              <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-surface/70 p-10 backdrop-blur">                <div className="mb-6 flex items-center justify-center">                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">                    <MessageSquare className="h-8 w-8 text-primary" />                  </div>                </div>                <h2 className="mb-3 text-center text-2xl font-light">                  Message sent                </h2>                <p className="mx-auto mb-8 max-w-xl text-center font-light text-text-dim">                  Thanks for reaching out. I read every note and reply within 48                  hours. If it’s urgent, say so in the first line next time.                </p>                <div className="flex justify-center">                  <Button                    variant="secondary"                    onClick={() => setSubmitted(false)}                  >                    Send another message                  </Button>                </div>              </div>            </motion.div>          ) : (            <motion.div              key="form"              initial={{ opacity: 0, y: 8, scale: 0.98 }}              animate={{ opacity: 1, y: 0, scale: 1 }}              exit={{ opacity: 0, y: -8, scale: 0.98 }}              className="grid w-full max-w-6xl gap-8 md:grid-cols-5"            >              <div className="md:col-span-3">                <form                  onSubmit={handleSubmit}                  className="rounded-2xl border border-border bg-surface/70 p-4 backdrop-blur md:p-6"                >                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">                    <div className="space-y-2">                      <Label htmlFor="name">Name</Label>                      <Input                        id="name"                        placeholder="Your name"                        value={form.name}                        onChange={(e) =>                          setForm((p) => ({ ...p, name: e.target.value }))                        }                        aria-invalid={!!errors.name}                        aria-describedby={errors.name ? "name-err" : undefined}                        startAdornment={<MessageSquare className="h-4 w-4" />}                        required                      />                      {errors.name && (                        <p id="name-err" className="text-xs text-red-400">                          {errors.name}                        </p>                      )}                    </div>                    <div className="space-y-2">                      <Label htmlFor="email">Email</Label>                      <Input                        id="email"                        type="email"                        placeholder="you@email.com"                        value={form.email}                        onChange={(e) =>                          setForm((p) => ({ ...p, email: e.target.value }))                        }                        aria-invalid={!!errors.email}                        aria-describedby={                          errors.email ? "email-err" : undefined                        }                        startAdornment={<Mail className="h-4 w-4" />}                        required                      />                      {errors.email && (                        <p id="email-err" className="text-xs text-red-400">                          {errors.email}                        </p>                      )}                    </div>                    <div className="space-y-2">                      <Label htmlFor="phone">                        Phone <span className="text-text-dim">(optional)</span>                      </Label>                      <Input                        id="phone"                        type="tel"                        placeholder="+1 555 123 4567"                        value={form.phone}                        onChange={(e) =>                          setForm((p) => ({ ...p, phone: e.target.value }))                        }                        startAdornment={<Phone className="h-4 w-4" />}                      />                    </div>                    <div className="space-y-2">                      <Label>Inquiry type</Label>                      <Select                        value={form.type}                        onValueChange={(v) =>                          setForm((p) => ({ ...p, type: v }))                        }                      >                        <SelectTrigger aria-invalid={!!errors.type}>                          <Tag className="h-4 w-4 opacity-70" />                          <SelectValue placeholder="Choose one" />                        </SelectTrigger>                        <SelectContent>                          <SelectItem value="prints">Prints</SelectItem>                          <SelectItem value="licensing">Licensing</SelectItem>                          <SelectItem value="exhibition">Exhibition</SelectItem>                          <SelectItem value="collaboration">                            Collaboration                          </SelectItem>                          <SelectItem value="other">Other</SelectItem>                        </SelectContent>                      </Select>                      {errors.type && (                        <p className="text-xs text-red-400">{errors.type}</p>                      )}                    </div>                  </div>                  <div className="mt-3 space-y-2">                    <Label htmlFor="message">Message</Label>                    <div className="relative">                      <Textarea                        id="message"                        placeholder="Tell me about your inquiry..."                        className="min-h-[160px]"                        value={form.message}                        onChange={(e) => {                          const val = e.target.value.slice(0, 1000);                          setForm((p) => ({ ...p, message: val }));                          setChars(val.length);                        }}                        aria-invalid={!!errors.message}                        aria-describedby={                          errors.message ? "msg-err" : undefined                        }                        required                      />                      <span className="pointer-events-none absolute bottom-2 right-2 text-[11px] text-text-dim">                        {chars}/1000                      </span>                    </div>                    {errors.message && (                      <p id="msg-err" className="text-xs text-red-400">                        {errors.message}                      </p>                    )}                  </div>                  <div className="hidden">                    <Label htmlFor="company">Company</Label>                    <Input                      id="company"                      tabIndex={-1}                      autoComplete="off"                      value={form.company}                      onChange={(e) =>                        setForm((p) => ({ ...p, company: e.target.value }))                      }                    />                  </div>                  {errors.submit && (                    <p className="mt-4 text-sm text-red-400">{errors.submit}</p>                  )}                  <div className="mt-6">                    <Button                      type="submit"                      size="lg"                      className="group w-full"                      disabled={!canSubmit}                    >                      {sending ? (                        <>                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />                          Sending                        </>                      ) : (                        <>                          Send message                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />                        </>                      )}                    </Button>                  </div>                </form>              </div>              <div className="md:col-span-2">                <div className="sticky top-8 space-y-6">                  <div className="rounded-2xl border border-border bg-surface/70 p-6 backdrop-blur">                    <h3 className="text-lg font-medium">Quick links</h3>                    <ul className="mt-4 space-y-3 text-sm">                      <li className="text-text-dim">                        For immediate print inquiries:                        <br />                        <a                          href="mailto:prints@michaelmartin.photo"                          className="text-primary hover:underline"                        >                          prints@michaelmartin.photo                        </a>                      </li>                      <li className="text-text-dim">                        Typical reply time: 24 to 48 hours                      </li>                      <li className="text-text-dim">                        Time sensitive? Start your message with “Urgent”.                      </li>                    </ul>                  </div>                  <div className="rounded-2xl border border-border bg-surface/70 p-6 backdrop-blur">                    <h3 className="text-lg font-medium">What helps</h3>                    <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-text-dim">                      <li>                        For licensing, include usage, region, and duration.                      </li>                      <li>                        For exhibitions, include dates, space, and format.                      </li>                      <li>                        For prints, share size and paper preferences if any.                      </li>                    </ul>                  </div>                </div>              </div>            </motion.div>          )}        </AnimatePresence>      </div>    </div>  );};export default PageLayout;

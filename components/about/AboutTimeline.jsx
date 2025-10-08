@@ -1,45 +1,1 @@
-"use client";
-
-export default function AboutTimeline({ items }) {
-  return (
-    <section className="bg-bg">
-      <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="mb-8 flex items-end justify-between">
-          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-            Timeline
-          </h2>
-          <div className="hidden text-xs text-text-dim md:block">
-            Key turns that shaped the work
-          </div>
-        </div>
-
-        <div className="relative">
-          <div className="pointer-events-none absolute left-1.5 top-0 bottom-0 w-px bg-[linear-gradient(to_bottom,transparent,rgba(255,255,255,.08)_20%,transparent_60%)]" />
-          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {items.map((t, i) => (
-              <li key={t.title} className="relative pl-6">
-                <span className="absolute left-0 top-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-primary/25 ring-2 ring-primary/30">
-                  <span className="block h-1.5 w-1.5 rounded-full bg-primary" />
-                </span>
-                <article className="group relative overflow-hidden rounded-2xl border border-border bg-surface/75 p-5 transition-transform duration-300 hover:-translate-y-0.5">
-                  <div className="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100">
-                    <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_75%_85%,rgba(33,92,101,.18),transparent)]" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 text-[11px] text-primary">
-                      {t.year}
-                    </span>
-                    <span className="text-sm text-text-dim">{t.title}</span>
-                  </div>
-                  <p className="mt-2 text-sm leading-relaxed text-text-dim">
-                    {t.text}
-                  </p>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
+"use client";export default function AboutTimeline({ items }) {  return (    <section className="bg-bg">      <div className="mx-auto max-w-7xl px-6 py-16">        <div className="mb-8 flex items-end justify-between">          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">            Timeline          </h2>          <div className="hidden text-xs text-text-dim md:block">            Key turns that shaped the work          </div>        </div>        <div className="relative">          <div className="pointer-events-none absolute left-1.5 top-0 bottom-0 w-px bg-[linear-gradient(to_bottom,transparent,rgba(255,255,255,.08)_20%,transparent_60%)]" />          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">            {items.map((t, i) => (              <li key={t.title} className="relative pl-6">                <span className="absolute left-0 top-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-primary/25 ring-2 ring-primary/30">                  <span className="block h-1.5 w-1.5 rounded-full bg-primary" />                </span>                <article className="group relative overflow-hidden rounded-2xl border border-border bg-surface/75 p-5 transition-transform duration-300 hover:-translate-y-0.5">                  <div className="absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100">                    <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_75%_85%,rgba(33,92,101,.18),transparent)]" />                  </div>                  <div className="flex items-center gap-2">                    <span className="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 text-[11px] text-primary">                      {t.year}                    </span>                    <span className="text-sm text-text-dim">{t.title}</span>                  </div>                  <p className="mt-2 text-sm leading-relaxed text-text-dim">                    {t.text}                  </p>                </article>              </li>            ))}          </ul>        </div>      </div>    </section>  );}

@@ -1,35 +1,1 @@
-"use client";
-
-export default function AboutStats() {
-  const stats = [
-    { k: "20+ years", v: "working with the street" },
-    { k: "3 regions", v: "Asia, US, Europe" },
-    { k: "1000s", v: "of frames and notes" },
-    { k: "1 aim", v: "hold what might be lost" },
-  ];
-
-  return (
-    <section className="bg-bg">
-      <div className="mx-auto max-w-7xl px-6 py-12">
-        <div className="relative rounded-3xl p-[1px] bg-[conic-gradient(at_30%_30%,rgba(62,207,210,.25),rgba(16,52,60,.2),transparent_60%)]">
-          <div className="rounded-3xl border border-border bg-surface/80 px-4 py-6 backdrop-blur">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {stats.map((s) => (
-                <div
-                  key={s.k}
-                  className="group relative overflow-hidden rounded-2xl border border-border bg-surface/70 p-5"
-                >
-                  <div className="pointer-events-none absolute -inset-1 translate-x-[-70%] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)] opacity-0 blur-md transition-all duration-700 group-hover:translate-x-[70%] group-hover:opacity-100" />
-                  <div className="text-xl font-semibold tracking-tight">
-                    {s.k}
-                  </div>
-                  <div className="mt-1 text-sm text-text-dim">{s.v}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+"use client";export default function AboutStats() {  const stats = [    { k: "20+ years", v: "working with the street" },    { k: "3 regions", v: "Asia, US, Europe" },    { k: "1000s", v: "of frames and notes" },    { k: "1 aim", v: "hold what might be lost" },  ];  return (    <section className="bg-bg">      <div className="mx-auto max-w-7xl px-6 py-12">        <div className="relative rounded-3xl p-[1px] bg-[conic-gradient(at_30%_30%,rgba(62,207,210,.25),rgba(16,52,60,.2),transparent_60%)]">          <div className="rounded-3xl border border-border bg-surface/80 px-4 py-6 backdrop-blur">            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">              {stats.map((s) => (                <div                  key={s.k}                  className="group relative overflow-hidden rounded-2xl border border-border bg-surface/70 p-5"                >                  <div className="pointer-events-none absolute -inset-1 translate-x-[-70%] bg-[linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)] opacity-0 blur-md transition-all duration-700 group-hover:translate-x-[70%] group-hover:opacity-100" />                  <div className="text-xl font-semibold tracking-tight">                    {s.k}                  </div>                  <div className="mt-1 text-sm text-text-dim">{s.v}</div>                </div>              ))}            </div>          </div>        </div>      </div>    </section>  );}

@@ -3,11 +3,9 @@ import AboutGallery from "@/components/about/AboutGallery";
 import AboutHero from "@/components/about/AboutHero";
 import AboutStats from "@/components/about/AboutStats";
 import AboutTimeline from "@/components/about/AboutTimeline";
-
 export const metadata = {
   title: "About Michael Martin",
 };
-
 export default function About() {
   const timeline = [
     {
@@ -51,14 +49,11 @@ export default function About() {
       text: "Street meets interpretation. Not only to portray, but to evoke.",
     },
   ];
-
   return (
     <main className="bg-bg">
       <AboutHero />
-      {/* <AboutStats /> */}
       <AboutTimeline items={timeline} />
       <AboutEssays />
-      <AboutGallery />
     </main>
   );
 }

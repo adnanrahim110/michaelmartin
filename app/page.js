@@ -4,11 +4,9 @@ import AudioToggle from "@/components/home/AudioToggle";
 import Cta from "@/components/home/Cta";
 import HeroSlideshow from "@/components/home/HeroSlideshow";
 import SeriesSec from "@/components/home/SeriesSec";
-
 export const metadata = {
   title: "Home | Michael Martin",
 };
-
 export default function Home() {
   return (
     <>

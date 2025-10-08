@@ -1,5 +1,4 @@
 "use client";
-
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
@@ -7,7 +6,6 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import { Autoplay, EffectFade } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
 const TEXT_SLIDES = [
   <>
     Moments vanish.
@@ -40,14 +38,11 @@ const TEXT_SLIDES = [
     Faces reconnect.
   </>,
 ];
-
 const DURATION_MS = 5000;
-
 export default function HeroSlideshow() {
   const [index, setIndex] = useState(0);
   const progressRef = useRef(null);
   const swiperRef = useRef(null);
-
   const images = useMemo(
     () =>
       Array.from(
@@ -56,10 +51,9 @@ export default function HeroSlideshow() {
       ),
     []
   );
-
   return (
     <section
-      className="relative w-full h-[70vh] md:h-[calc(100vh-80px)] overflow-hidden bg-bg"
+      className="relative w-full h-[60vh] sm:h-[70vh] md:h-[calc(100vh-80px)] overflow-hidden bg-bg"
       onMouseEnter={() => swiperRef.current?.autoplay?.pause()}
       onMouseLeave={() => swiperRef.current?.autoplay?.resume()}
     >
@@ -99,10 +93,8 @@ export default function HeroSlideshow() {
           </SwiperSlide>
         ))}
       </Swiper>
-
       <div className="pointer-events-none absolute inset-0" />
-
-      <div className="absolute right-6 md:right-10 bottom-8 md:bottom-12 max-w-[90%] z-[1] md:max-w-[48rem]">
+      <div className="absolute right-3 sm:right-6 md:right-10 bottom-6 sm:bottom-8 md:bottom-12 max-w-[92%] sm:max-w-[90%] z-[1] md:max-w-[48rem]">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -111,22 +103,21 @@ export default function HeroSlideshow() {
             exit={{ y: -8, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             className={cn(
-              "ml-auto rounded-xl bg-surface/70 backdrop-blur px-4 md:px-6 py-3 md:py-4",
+              "ml-auto rounded-lg sm:rounded-xl bg-surface/70 backdrop-blur px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4",
               "border border-border/70 shadow-[0_10px_30px_-12px_rgba(0,0,0,.55)]"
             )}
           >
-            <h1 className="text-right text-2xl md:text-5xl lg:text-6xl font-light leading-tight text-text">
+            <h1 className="text-right text-xl sm:text-2xl md:text-5xl lg:text-6xl font-light leading-tight text-text">
               {TEXT_SLIDES[index]}
             </h1>
           </motion.div>
         </AnimatePresence>
-
-        <div className="mt-3 flex items-center justify-end gap-3">
-          <div className="text-text-dim text-xs md:text-sm tabular-nums">
+        <div className="mt-2 sm:mt-3 flex items-center justify-end gap-2 sm:gap-3">
+          <div className="text-text-dim text-xs sm:text-xs md:text-sm tabular-nums">
             {String(index + 1).padStart(2, "0")} /{" "}
             {String(TEXT_SLIDES.length).padStart(2, "0")}
           </div>
-          <div className="relative h-1 w-28 md:w-40 rounded-full bg-muted/50 overflow-hidden">
+          <div className="relative h-0.5 sm:h-1 w-20 sm:w-28 md:w-40 rounded-full bg-muted/50 overflow-hidden">
             <div
               ref={progressRef}
               className="absolute left-0 top-0 h-full bg-primary"

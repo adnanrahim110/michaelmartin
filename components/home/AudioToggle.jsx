@@ -1,9 +1,7 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Volume2, VolumeX } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-
 export default function AudioToggle({
   src,
   initialPlaying = false,
@@ -12,14 +10,12 @@ export default function AudioToggle({
 }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(initialPlaying);
-
   useEffect(() => {
     const el = new Audio(src);
     el.loop = loop;
     el.preload = "auto";
     el.volume = 0.7;
     audioRef.current = el;
-
     if (initialPlaying) {
       el.play().catch(() => setIsPlaying(false));
     }
@@ -29,7 +25,6 @@ export default function AudioToggle({
       audioRef.current = null;
     };
   }, [src, loop, initialPlaying]);
-
   const toggleAudio = useCallback(() => {
     const el = audioRef.current;
     if (!el) return;
@@ -42,7 +37,6 @@ export default function AudioToggle({
         .catch(() => setIsPlaying(false));
     }
   }, [isPlaying]);
-
   useEffect(() => {
     const onKey = (e) => {
       if (e.key.toLowerCase() === "m") toggleAudio();
@@ -50,15 +44,13 @@ export default function AudioToggle({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [toggleAudio]);
-
   return (
-    <div className="fixed bottom-6 right-6 z-40">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
       {isPlaying && (
         <span className="pointer-events-none absolute inset-0 -z-10 grid place-items-center">
           <span className="h-12 w-12 rounded-full bg-primary/25 animate-ping" />
         </span>
       )}
-
       <Button
         size="icon"
         variant="ghost"

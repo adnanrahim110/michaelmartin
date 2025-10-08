@@ -1,12 +1,1 @@
-import PageLayout from "./PageLayout";
-
-export const metadata = {
-  title: "Contact | Michael Martin",
-};
-
-export default function Contact() {
-
-  return (
-    <PageLayout />
-  );
-}
+import PageLayout from "./PageLayout";export const metadata = {  title: "Contact | Michael Martin",};export default function Contact() {  return (    <PageLayout />  );}

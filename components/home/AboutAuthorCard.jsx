@@ -7,15 +7,15 @@ import Link from "next/link";
 export default function AboutAuthorCard() {
   return (
     <section className="bg-bg">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
+      <div className="mx-auto max-w-7xl px-3 sm:px-4 md:px-6 py-12 sm:py-16 md:py-24">
+        <div className="grid items-center gap-8 sm:gap-10 lg:gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div className="relative">
             <div className="relative rounded-2xl border border-border bg-surface/60 backdrop-blur">
               <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/5" />
               <img
                 src="/images/author.png"
                 alt="Michael Martin"
-                className="h-[520px] w-full rounded-2xl object-cover"
+                className="h-[400px] sm:h-[480px] lg:h-[520px] w-full rounded-2xl object-cover"
               />
               <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[linear-gradient(to_top,rgba(11,15,18,.85),transparent_55%)]" />
             </div>
