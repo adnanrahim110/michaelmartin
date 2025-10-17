@@ -1,6 +1,6 @@
 "use client";
 
-import AudioPlayer from "@/components/songs/AudioPlayer";
+import { useAudioPlayer } from "@/components/songs/AudioPlayerProvider";
 import FeaturedSongs from "@/components/songs/FeaturedSongs";
 import SongsGrid from "@/components/songs/SongsGrid";
 import SongsHeader from "@/components/songs/SongsHeader";
@@ -13,16 +13,29 @@ const SORT_FUNCTIONS = {
   title: (a, b) => a.title.localeCompare(b.title),
 };
 
-const SONGS_PER_PAGE = 8;
+const getSongsPerPage = (width) => {
+  if (width > 1280) return 10;
+  if (width > 1024) return 8;
+  if (width > 780) return 6;
+  return 4;
+};
 
 export default function SongsPageLayout() {
   const [viewMode, setViewMode] = useState("grid");
   const [sortBy, setSortBy] = useState("title");
   const [isLoading, setIsLoading] = useState(true);
-  const [currentSong, setCurrentSong] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [displayedCount, setDisplayedCount] = useState(SONGS_PER_PAGE);
+  const [songsPerPage, setSongsPerPage] = useState(4);
+  const [displayedCount, setDisplayedCount] = useState(4);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const {
+    currentSong,
+    isPlaying,
+    playSong,
+    pause,
+    togglePlay,
+    setQueueFromSongs,
+  } = useAudioPlayer();
 
   const featuredSongs = useMemo(
     () => songs.filter((song) => song.featured),
@@ -50,66 +63,44 @@ export default function SongsPageLayout() {
   }, []);
 
   useEffect(() => {
-    setDisplayedCount(SONGS_PER_PAGE);
-  }, [sortBy]);
+    const updateSongsPerPage = () => {
+      if (typeof window === "undefined") return;
+      const width = window.innerWidth;
+      const nextValue = getSongsPerPage(width);
+      setSongsPerPage((prev) => (prev === nextValue ? prev : nextValue));
+    };
+
+    updateSongsPerPage();
+    window.addEventListener("resize", updateSongsPerPage);
+    return () => window.removeEventListener("resize", updateSongsPerPage);
+  }, []);
+
+  useEffect(() => {
+    setDisplayedCount(songsPerPage);
+  }, [songsPerPage, sortBy]);
+
+  useEffect(() => {
+    setQueueFromSongs(allSongs);
+  }, [allSongs, setQueueFromSongs]);
 
   const handlePlaySong = useCallback(
     (song) => {
       if (currentSong?.id === song.id) {
-        setIsPlaying((prev) => !prev);
+        togglePlay();
       } else {
-        setCurrentSong(song);
-        setIsPlaying(true);
+        playSong(song, allSongs);
       }
     },
-    [currentSong?.id]
-  );
-
-  const handlePause = useCallback(() => setIsPlaying(false), []);
-  const handlePlay = useCallback(() => setIsPlaying(true), []);
-
-  const handleClosePlayer = useCallback(() => {
-    setIsPlaying(false);
-    setTimeout(() => setCurrentSong(null), 100);
-  }, []);
-
-  const navigateToSong = useCallback(
-    (direction) => {
-      if (!currentSong) return;
-      const currentIndex = allSongs.findIndex(
-        (song) => song.id === currentSong.id
-      );
-      if (currentIndex === -1) return;
-
-      const nextIndex =
-        direction === "next"
-          ? (currentIndex + 1) % allSongs.length
-          : currentIndex === 0
-          ? allSongs.length - 1
-          : currentIndex - 1;
-
-      setCurrentSong(allSongs[nextIndex]);
-      setIsPlaying(true);
-    },
-    [currentSong, allSongs]
+    [currentSong?.id, togglePlay, playSong, allSongs]
   );
 
   const handleLoadMore = useCallback(() => {
     setIsLoadingMore(true);
     setTimeout(() => {
-      setDisplayedCount((prev) => prev + SONGS_PER_PAGE);
+      setDisplayedCount((prev) => prev + songsPerPage);
       setIsLoadingMore(false);
     }, 800);
-  }, []);
-
-  const handleNextSong = useCallback(
-    () => navigateToSong("next"),
-    [navigateToSong]
-  );
-  const handlePreviousSong = useCallback(
-    () => navigateToSong("prev"),
-    [navigateToSong]
-  );
+  }, [songsPerPage]);
 
   if (isLoading) {
     return (
@@ -146,7 +137,7 @@ export default function SongsPageLayout() {
           onSortChange={setSortBy}
           title="Complete Collection"
           onSongPlay={handlePlaySong}
-          onSongPause={handlePause}
+          onSongPause={pause}
           currentSong={currentSong}
           isPlaying={isPlaying}
           totalSongs={allSongs.length}
@@ -155,16 +146,6 @@ export default function SongsPageLayout() {
           isLoadingMore={isLoadingMore}
         />
       </div>
-
-      <AudioPlayer
-        currentSong={currentSong}
-        isPlaying={isPlaying}
-        onPlay={handlePlay}
-        onPause={handlePause}
-        onClose={handleClosePlayer}
-        onNext={handleNextSong}
-        onPrevious={handlePreviousSong}
-      />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
 export default function SeriesCard({
   text,
   img,
@@ -10,11 +11,13 @@ export default function SeriesCard({
   tag,
   meta,
   priority,
+  onClick,
 }) {
   const to = href ?? (slug ? `/series/${slug}` : "#");
-  return (
-    <Link href={to} className="group relative block">
-      <div className="relative rounded-2xl p-[1px] transition-transform duration-500 group-hover:scale-[1.01] overflow-hidden">
+
+  const cardBody = (
+    <>
+      <div className="relative rounded-2xl p-[1px] overflow-hidden transition-transform duration-500 group-hover:scale-[1.01]">
         <div className="absolute inset-0 rounded-2xl bg-[conic-gradient(from_140deg,rgba(62,207,210,.28),rgba(32,79,89,.14)_35%,transparent_60%)] opacity-70" />
         <div className="relative overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_20px_60px_-30px_rgba(0,0,0,.65)]">
           <div className="relative aspect-[1/1]">
@@ -52,6 +55,24 @@ export default function SeriesCard({
           <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/5" />
         </div>
       </div>
+    </>
+  );
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className="group relative block w-full text-left focus:outline-none"
+      >
+        {cardBody}
+      </button>
+    );
+  }
+
+  return (
+    <Link href={to} className="group relative block">
+      {cardBody}
     </Link>
   );
 }

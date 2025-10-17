@@ -111,7 +111,7 @@ export default function Navigation() {
                 </div>
               </div>
               <Button asChild>
-                <Link href="/contact">Get in touch</Link>
+                <Link href="#">Buy Now</Link>
               </Button>
             </div>
             <Button
@@ -162,7 +162,7 @@ export default function Navigation() {
                     </motion.div>
                   ))}
                   <Button asChild className="mt-2 sm:mt-3 text-sm sm:text-base">
-                    <Link href="/contact">Get in touch</Link>
+                    <Link href="#">Buy Now</Link>
                   </Button>
                 </div>
               </div>

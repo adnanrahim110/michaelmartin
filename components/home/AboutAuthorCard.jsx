@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BookOpen, Camera, MapPin, Users } from "lucide-react";
+import { Camera } from "lucide-react";
 import Link from "next/link";
 
 export default function AboutAuthorCard() {
@@ -37,9 +37,9 @@ export default function AboutAuthorCard() {
               Photographer, writer, and close reader of the human condition.
               Michael’s work reaches past documentation to what lingers our
               shared humanness. From the Umbrella Protests in Hong Kong to
-              Manila’s back alleys, his photographs show politics, street life,
-              and quiet resilience colliding in frames that evoke more than they
-              describe.
+              different Manila barangays,, his photographs show politics, street
+              life, and quiet resilience colliding in frames that evoke more
+              than they describe.
             </p>
 
             <p className="mt-4 text-base leading-relaxed text-text-dim">

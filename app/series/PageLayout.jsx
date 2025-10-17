@@ -1,1 +1,149 @@
-"use client";import FeaturedSection from "@/components/series/FeaturedSection";import FilterBar from "@/components/series/FilterBar";import JustifiedGrid from "@/components/series/JustifiedGrid";import SeriesHeader from "@/components/series/SeriesHeader";import { Button } from "@/components/ui/button";import { series } from "@/constants";import Link from "next/link";import { useMemo, useState } from "react";const PageLayout = () => {  const data = useMemo(() => {    return series.map((item, index) => {      const yearMatch = item.text.match(/\b(19|20)\d{2}\b/);      const year = yearMatch ? parseInt(yearMatch[0]) : 2000 + index;      let location = "Unknown";      if (item.text.includes("Atlanta")) location = "Atlanta";      else if (item.text.includes("Hong Kong")) location = "Hong Kong";      else if (item.text.includes("Singapore")) location = "Singapore";      else if (        item.text.includes("Manila") ||        item.text.includes("Philippines")      )        location = "Philippines";      else if (item.text.includes("Miami")) location = "Miami";      else if (item.text.includes("Laoag")) location = "Philippines";      const formatTag = (tag) => {        return tag          .split("-")          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))          .join(" ");      };      return {        title: item.text.split(",")[0].replace(/"/g, ""),        description: item.text,        image: Array.isArray(item.img) ? item.img[0] : item.img,        slug: item.slug,        tag: formatTag(item.tag),        year: year,        location: location,      };    });  }, []);  const uniqueTags = [    ...new Set(      series.map((item) => {        return item.tag          .split("-")          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))          .join(" ");      })    ),  ].sort();  const tags = ["All", ...uniqueTags];  const [q, setQ] = useState("");  const [tag, setTag] = useState("All");  const [sort, setSort] = useState("recent");  const [visible, setVisible] = useState(9);  const [isLoading, setIsLoading] = useState(false);  const filtered = useMemo(() => {    let list = [...data];    if (tag !== "All") list = list.filter((i) => i.tag === tag);    if (q.trim()) {      const s = q.toLowerCase();      list = list.filter(        (i) =>          i.title.toLowerCase().includes(s) ||          i.description.toLowerCase().includes(s) ||          i.location.toLowerCase().includes(s)      );    }    if (sort === "recent") list.sort((a, b) => b.year - a.year);    if (sort === "alpha") list.sort((a, b) => a.title.localeCompare(b.title));    return list;  }, [data, tag, q, sort]);  const rest = useMemo(() => filtered.slice(1, visible), [filtered, visible]);  return (    <main className="bg-bg">      <section className="border-b border-border">        <div className="mx-auto max-w-7xl px-6 pt-10 pb-8 md:pt-16 md:pb-12">          <SeriesHeader q={q} setQ={setQ} setVisible={setVisible} />          <FilterBar            tags={tags}            tag={tag}            setTag={setTag}            sort={sort}            setSort={setSort}            filtered={filtered}            q={q}            setQ={setQ}            setVisible={setVisible}          />          <FeaturedSection filtered={filtered} />        </div>      </section>      <section className="mx-auto max-w-7xl px-6 py-10 md:py-16">        <div className="mb-6 flex items-center justify-between">          <h2 className="text-xl md:text-2xl font-semibold tracking-tight">            All collections          </h2>          <Link            href="/prints"            className="text-sm text-primary hover:text-primary-400 transition-colors"          >            Browse prints          </Link>        </div>        {rest.length === 0 ? (          <div className="rounded-xl border border-border bg-surface/70 p-8 text-center text-sm text-text-dim">            Nothing matched your filters. Try a different tag or search term.          </div>        ) : (          <div className="transition-all duration-500 ease-out">            <JustifiedGrid key={`grid-${visible}`} items={rest} />            {isLoading && (              <div className="mt-8 flex justify-center">                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm px-6 py-3 rounded-full border border-gray-200/50 dark:border-gray-700/50 shadow-lg animate-fade-in hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all duration-300">                  <div className="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin"></div>                  <span className="text-sm font-medium animate-pulse">                    Loading more collections...                  </span>                </div>              </div>            )}          </div>        )}        {visible < filtered.length && (          <div className="mt-10 flex justify-center">            <Button              variant="outline"              onClick={async () => {                setIsLoading(true);                await new Promise((resolve) => setTimeout(resolve, 1200));                setVisible((v) => v + 10);                await new Promise((resolve) => setTimeout(resolve, 200));                setIsLoading(false);              }}              disabled={isLoading}              className="min-w-[180px] transition-all duration-200"            >              {isLoading ? (                <div className="flex items-center gap-2">                  <div className="w-4 h-4 border-2 border-border border-t-primary rounded-full animate-spin"></div>                  <span>Loading...</span>                </div>              ) : (                "Load more"              )}            </Button>          </div>        )}      </section>    </main>  );};export default PageLayout;
+"use client";
+import FeaturedSection from "@/components/series/FeaturedSection";
+import FilterBar from "@/components/series/FilterBar";
+import JustifiedGrid from "@/components/series/JustifiedGrid";
+import SeriesHeader from "@/components/series/SeriesHeader";
+import { Button } from "@/components/ui/button";
+import { series } from "@/constants";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+const PageLayout = () => {
+  const data = useMemo(() => {
+    return series.map((item, index) => {
+      const yearMatch = item.text.match(/\b(19|20)\d{2}\b/);
+      const year = yearMatch ? parseInt(yearMatch[0]) : 2000 + index;
+      let location = "Unknown";
+      if (item.text.includes("Atlanta")) location = "Atlanta";
+      else if (item.text.includes("Hong Kong")) location = "Hong Kong";
+      else if (item.text.includes("Singapore")) location = "Singapore";
+      else if (
+        item.text.includes("Manila") ||
+        item.text.includes("Philippines")
+      )
+        location = "Philippines";
+      else if (item.text.includes("Miami")) location = "Miami";
+      else if (item.text.includes("Laoag")) location = "Philippines";
+      const formatTag = (tag) => {
+        return tag
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+      };
+      return {
+        title: item.text.split(",")[0].replace(/"/g, ""),
+        description: item.text,
+        image: Array.isArray(item.img) ? item.img[0] : item.img,
+        slug: item.slug,
+        tag: formatTag(item.tag),
+        year: year,
+        location: location,
+      };
+    });
+  }, []);
+  const uniqueTags = [
+    ...new Set(
+      series.map((item) => {
+        return item.tag
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+      })
+    ),
+  ].sort();
+  const tags = ["All", ...uniqueTags];
+  const [q, setQ] = useState("");
+  const [tag, setTag] = useState("All");
+  const [sort, setSort] = useState("recent");
+  const [visible, setVisible] = useState(9);
+  const [isLoading, setIsLoading] = useState(false);
+  const filtered = useMemo(() => {
+    let list = [...data];
+    if (tag !== "All") list = list.filter((i) => i.tag === tag);
+    if (q.trim()) {
+      const s = q.toLowerCase();
+      list = list.filter(
+        (i) =>
+          i.title.toLowerCase().includes(s) ||
+          i.description.toLowerCase().includes(s) ||
+          i.location.toLowerCase().includes(s)
+      );
+    }
+    if (sort === "recent") list.sort((a, b) => b.year - a.year);
+    if (sort === "alpha") list.sort((a, b) => a.title.localeCompare(b.title));
+    return list;
+  }, [data, tag, q, sort]);
+  const rest = useMemo(() => filtered.slice(1, visible), [filtered, visible]);
+  return (
+    <main className="bg-bg">
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-6 pt-10 pb-8 md:pt-16 md:pb-12">
+          <SeriesHeader q={q} setQ={setQ} setVisible={setVisible} />
+          <FilterBar
+            tags={tags}
+            tag={tag}
+            setTag={setTag}
+            sort={sort}
+            setSort={setSort}
+            filtered={filtered}
+            q={q}
+            setQ={setQ}
+            setVisible={setVisible}
+          />
+          <FeaturedSection filtered={filtered} />
+        </div>
+      </section>
+      <section className="mx-auto max-w-7xl px-6 py-10 md:py-16">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+            All collections
+          </h2>
+        </div>
+        {rest.length === 0 ? (
+          <div className="rounded-xl border border-border bg-surface/70 p-8 text-center text-sm text-text-dim">
+            Nothing matched your filters. Try a different tag or search term.
+          </div>
+        ) : (
+          <div className="transition-all duration-500 ease-out">
+            <JustifiedGrid key={`grid-${visible}`} items={rest} />
+            {isLoading && (
+              <div className="mt-8 flex justify-center">
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm px-6 py-3 rounded-full border border-gray-200/50 dark:border-gray-700/50 shadow-lg animate-fade-in hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all duration-300">
+                  <div className="w-5 h-5 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin"></div>
+                  <span className="text-sm font-medium animate-pulse">
+                    Loading more collections...
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        {visible < filtered.length && (
+          <div className="mt-10 flex justify-center">
+            <Button
+              variant="outline"
+              onClick={async () => {
+                setIsLoading(true);
+                await new Promise((resolve) => setTimeout(resolve, 1200));
+                setVisible((v) => v + 10);
+                await new Promise((resolve) => setTimeout(resolve, 200));
+                setIsLoading(false);
+              }}
+              disabled={isLoading}
+              className="min-w-[180px] transition-all duration-200"
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-border border-t-primary rounded-full animate-spin"></div>
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                "Load more"
+              )}
+            </Button>
+          </div>
+        )}
+      </section>
+    </main>
+  );
+};
+export default PageLayout;
