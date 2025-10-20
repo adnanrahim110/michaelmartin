@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { links } from "@/constants";
+import { AMZ_LINK, links } from "@/constants";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { BookOpen, Info, Layers, Mail, Menu, X } from "lucide-react";
@@ -111,7 +111,9 @@ export default function Navigation() {
                 </div>
               </div>
               <Button asChild>
-                <Link href="#">Buy Now</Link>
+                <Link href={AMZ_LINK} target="_blank" rel="noopener noreferrer">
+                  Buy Now on Amazon
+                </Link>
               </Button>
             </div>
             <Button
@@ -162,7 +164,13 @@ export default function Navigation() {
                     </motion.div>
                   ))}
                   <Button asChild className="mt-2 sm:mt-3 text-sm sm:text-base">
-                    <Link href="#">Buy Now</Link>
+                    <Link
+                      href={AMZ_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Buy Now on Amazon
+                    </Link>
                   </Button>
                 </div>
               </div>

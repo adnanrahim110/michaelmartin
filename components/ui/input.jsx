@@ -38,7 +38,7 @@ const Input = React.forwardRef(
         ? paddings.right
         : paddings.none;
     return (
-      <div className="relative">
+      <div className="relative w-full">
         <input
           type={type}
           aria-invalid={error || undefined}

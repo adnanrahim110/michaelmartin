@@ -43,15 +43,6 @@ export default function AboutBookCard() {
             </div>
 
             <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="shadow-[0_12px_40px_-16px_rgba(34,178,184,.45)]"
-              >
-                <Link href="/book" data-testid="button-view-book">
-                  View book details
-                </Link>
-              </Button>
               <Button asChild size="lg" variant="outline">
                 <Link
                   href={AMZ_LINK}

@@ -1,4 +1,4 @@
-export const AMZ_LINK = "https://amazon.com/dp/B0FTHYMZWX"
+export const AMZ_LINK = "https://amazon.com/dp/1966931018"
 export const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },

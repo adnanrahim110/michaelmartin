@@ -4,8 +4,8 @@ import FilterBar from "@/components/series/FilterBar";
 import JustifiedGrid from "@/components/series/JustifiedGrid";
 import SeriesHeader from "@/components/series/SeriesHeader";
 import { Button } from "@/components/ui/button";
+import SeriesCta from "@/components/series/SeriesCta";
 import { series } from "@/constants";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 const PageLayout = () => {
   const data = useMemo(() => {
@@ -143,6 +143,7 @@ const PageLayout = () => {
           </div>
         )}
       </section>
+      <SeriesCta />
     </main>
   );
 };
